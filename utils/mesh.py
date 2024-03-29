@@ -7,7 +7,7 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
-import meshzoo
+# import meshzoo
 import torch
 from ..utils.obj2nmr import obj2nmr_uvmap
 
@@ -68,11 +68,11 @@ def sample_textures(texture_flow, images):
     # B x F x T x T x 3
     return samples.permute(0, 2, 3, 4, 1)
 
-def create_sphere(n_subdivide=3):
-    # 3 makes 642 verts, 1280 faces,
-    # 4 makes 2562 verts, 5120 faces
-    verts, faces = meshzoo.iso_sphere(n_subdivide)
-    return verts, faces
+# def create_sphere(n_subdivide=3):
+#     # 3 makes 642 verts, 1280 faces,
+#     # 4 makes 2562 verts, 5120 faces
+#     verts, faces = meshzoo.iso_sphere(n_subdivide)
+#     return verts, faces
 
 
 def make_symmetric(verts, faces, left_inds, right_inds, center_inds):
