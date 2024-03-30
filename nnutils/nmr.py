@@ -6,7 +6,7 @@ import numpy as np
 import scipy.misc
 import tqdm
 
-import chainer
+#import chainer
 import torch
 
 import neural_renderer
@@ -44,8 +44,8 @@ class NMR(object):
         Returns:
             masks: B X 256 X 256 numpy array
         '''
-        self.faces = chainer.Variable(chainer.cuda.to_gpu(faces, self.cuda_device))
-        self.vertices = chainer.Variable(chainer.cuda.to_gpu(vertices, self.cuda_device))
+        self.faces = torch.tensor(faces).cuda()
+        self.vertices = torch.tensor(vertices).cuda()
 
         self.masks = self.renderer.render_silhouettes(self.vertices, self.faces)
 
@@ -59,7 +59,7 @@ class NMR(object):
         Returns:
             grad_vertices: B X N X 3 numpy array
         '''
-        self.masks.grad = chainer.cuda.to_gpu(grad_masks, self.cuda_device)
+        self.masks.grad = torch.tensor(grad_masks).cuda()
         self.masks.backward()
         return self.vertices.grad.get()
 
@@ -72,9 +72,9 @@ class NMR(object):
         Returns:
             images: B X 3 x 256 X 256 numpy array
         '''
-        self.faces = chainer.Variable(chainer.cuda.to_gpu(faces, self.cuda_device))
-        self.vertices = chainer.Variable(chainer.cuda.to_gpu(vertices, self.cuda_device))
-        self.textures = chainer.Variable(chainer.cuda.to_gpu(textures, self.cuda_device))
+        self.faces = torch.tensor(faces).cuda()
+        self.vertices = torch.tensor(vertices).cuda()
+        self.textures = torch.tensor(textures).cuda()
         self.images = self.renderer.render(self.vertices, self.faces, self.textures)
 
         images = self.images.data.get()
@@ -89,7 +89,7 @@ class NMR(object):
             grad_vertices: B X N X 3 numpy array
             grad_textures: B X F X T X T X T X 3 numpy array
         '''
-        self.images.grad = chainer.cuda.to_gpu(grad_images, self.cuda_device)
+        self.images.grad = torch.tensor(grad_images).cuda()
         self.images.backward()
         return self.vertices.grad.get(), self.textures.grad.get()
 
