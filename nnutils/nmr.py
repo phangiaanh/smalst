@@ -29,7 +29,7 @@ def convert_as(src, trg):
 class NMR(object):
     def __init__(self):
         # setup renderer
-        renderer = neural_renderer.Renderer()
+        renderer = neural_renderer.Renderer(camera_mode='look_at')
         self.renderer = renderer
 
     def to_gpu(self, device=0):
