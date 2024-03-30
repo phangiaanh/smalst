@@ -49,7 +49,7 @@ class NMR(object):
 
         self.masks = self.renderer.render_silhouettes(self.vertices, self.faces)
 
-        masks = self.masks.data.get()
+        masks = self.masks.data.item()
         return masks
     
     def backward_mask(self, grad_masks):
@@ -61,7 +61,7 @@ class NMR(object):
         '''
         self.masks.grad = torch.tensor(grad_masks).cuda()
         self.masks.backward()
-        return self.vertices.grad.get()
+        return self.vertices.grad.item()
 
     def forward_img(self, vertices, faces, textures):
         ''' Renders masks.
@@ -77,7 +77,7 @@ class NMR(object):
         self.textures = torch.tensor(textures).cuda()
         self.images = self.renderer.render(self.vertices, self.faces, self.textures)
 
-        images = self.images.data.get()
+        images = self.images.data.item()
         return images
 
 
@@ -91,7 +91,7 @@ class NMR(object):
         '''
         self.images.grad = torch.tensor(grad_images).cuda()
         self.images.backward()
-        return self.vertices.grad.get(), self.textures.grad.get()
+        return self.vertices.grad.item(), self.textures.grad.item()
 
 ########################################################################
 ################# Wrapper class a rendering PythonOp ###################
