@@ -77,7 +77,7 @@ class NMR(object):
         self.textures = torch.tensor(textures).cuda()
         self.images = self.renderer.render(self.vertices, self.faces, self.textures)
 
-        images = self.images.data.tolist()
+        images = self.images.detach().cpu().numpy()
         return images
 
 
